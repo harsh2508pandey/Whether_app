@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Python cache
+*.pyc
+
+# VS Code settings (optional)
+.vscode/
+
+# Docker
+*.tar
+*.pid
+
+# OS files
+.DS_Store
+
+# Jenkins
+secrets/
