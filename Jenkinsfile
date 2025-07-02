@@ -1,23 +1,17 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = 'weatherapp-image'
-        CONTAINER_NAME = 'weatherapp-container'
-    }
-
     stages {
-
-        stage('Clone Repo') {
+        stage('Clone') {
             steps {
-                git url: 'https://github.com/harsh2508pandey/Whether_app.git', branch: 'main'
+                git 'https://github.com/harsh2508pandey/Whether_app'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t $IMAGE_NAME .'
+                    docker.build('whether_app')
                 }
             }
         }
@@ -25,23 +19,12 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    // Stop and remove any old container
-                    sh '''
-                        docker stop $CONTAINER_NAME || true
-                        docker rm $CONTAINER_NAME || true
-                        docker run -d --name $CONTAINER_NAME -p 5000:5000 $IMAGE_NAME
-                    '''
+                    sh 'docker stop whether_app || true'
+                    sh 'docker rm whether_app || true'
+                    sh 'docker run -d --name whether_app -p 5000:5000 whether_app'
                 }
             }
         }
     }
-
-    post {
-        failure {
-            echo 'Deployment failed.'
-        }
-        success {
-            echo 'Deployment succeeded!'
-        }
-    }
 }
+
