@@ -4,29 +4,27 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/harsh2508pandey/Whether_app.git'
+                git 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("harsh3928/whether_app")
+                    docker.build("weather-app")
                 }
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Run Container') {
             steps {
-                sh "docker run -d -p 5000:5000 --name whether_container harsh3928/whether_app"
-            }
-        }
-
-        stage('Notify Success') {
-            steps {
-                echo 'Deployment successful. Visit: https://fancy-drinks-drum.loca.lt'
+                script {
+                    sh 'docker stop weather-app || true && docker rm weather-app || true'
+                    sh 'docker run -d -p 5000:5000 --name weather-app weather-app'
+                }
             }
         }
     }
 }
+
 
