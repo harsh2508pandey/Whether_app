@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/harsh2508pandey/Whether_app.git'
+                git branch: 'main', url: 'https://github.com/harsh2508pandey/Whether_app.git'
             }
         }
 
