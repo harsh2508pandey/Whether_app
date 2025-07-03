@@ -1,27 +1,30 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "weather-app"
+        CONTAINER_NAME = "weather-container"
+    }
+
     stages {
         stage('Clone Code') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
+                git credentialsId: 'github-token', url: 'https://github.com/harsh2508pandey/Whether_app.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("weather-app")
-                }
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
         stage('Run Container') {
             steps {
-                script {
-                    sh 'docker stop weather-app || true && docker rm weather-app || true'
-                    sh 'docker run -d -p 5000:5000 --name weather-app weather-app'
-                }
+                sh '''
+                    docker rm -f $CONTAINER_NAME || true
+                    docker run -d -p 5000:5000 --name $CONTAINER_NAME $IMAGE_NAME
+                '''
             }
         }
     }
